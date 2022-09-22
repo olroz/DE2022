@@ -42,7 +42,7 @@ def main() -> flask_typing.ResponseReturnValue:
 
         mylist = api.get_sales(input_data['date'])
         #print(mylist[0])
-        #print(mylist[1])
+        print(mylist[1])
         code = int(mylist[1])
 
         stored = storage.save_to_disk(
