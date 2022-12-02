@@ -42,6 +42,7 @@ extract_data_from_api = SimpleHttpOperator(
     method='POST',
     data=json.dumps({"date": "{{ ds }}","raw_dir": RAW_DIR}),
     headers={"Content-Type": "application/json"},
+    log_response=True,
     dag=dag,
 )
 
@@ -51,7 +52,11 @@ convert_to_avro = SimpleHttpOperator(
     method='POST',
     data=json.dumps({"raw_dir": RAW_DIR,"stg_dir": STG_DIR}),
     headers={"Content-Type": "application/json"},
+    log_response=True,
     dag=dag,
 )
+
+# take care of response timeout in real projects with long-living tasks  :   dagrun_timeout=timedelta(seconds=600),    execution_timeout=timedelta(seconds=60),
+# suggest setting log_response=True   --  Shows response in the task log
 
 extract_data_from_api >> convert_to_avro
